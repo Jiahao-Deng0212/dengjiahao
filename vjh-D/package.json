@@ -1,0 +1,29 @@
+{
+	"name": "vjh-d",
+	"private": true,
+	"version": "0.0.0",
+	"author": "dengjiahao",
+	"scripts": {
+		"dev": "vite",
+		"build": "vue-tsc && vite build",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"vue": "^3.4.19"
+	},
+	"devDependencies": {
+		"@types/node": "^20.11.26",
+		"@typescript-eslint/eslint-plugin": "^7.2.0",
+		"@typescript-eslint/parser": "^7.2.0",
+		"@vitejs/plugin-vue": "^5.0.4",
+		"eslint": "^8.57.0",
+		"eslint-plugin-vue": "^9.23.0",
+		"prettier": "^3.2.5",
+		"sass": "^1.71.1",
+		"typescript": "^5.2.2",
+		"vite": "^5.1.4",
+		"vite-plugin-compression": "^0.5.1",
+		"vite-plugin-vue-setup-extend-plus": "^0.1.0",
+		"vue-tsc": "^1.8.27"
+	}
+}

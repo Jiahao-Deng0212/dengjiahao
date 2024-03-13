@@ -1,11 +1,6 @@
-<script setup lang="ts">
-import DemoVue from '@/components/Demo.vue';
-</script>
+<script setup lang="ts"></script>
 <template>
-	<div>
-		hello word
-		<DemoVue></DemoVue>
-	</div>
+	<router-view></router-view>
 </template>
 
 <style scoped lang="scss">

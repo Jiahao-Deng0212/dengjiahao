@@ -2,7 +2,12 @@ import { RouteRecordRaw } from 'vue-router';
 
 export default <Array<RouteRecordRaw>>[
 	{
-		path: '/',
-		component: () => import('@/layout/index.vue'),
+		path: '/login',
+		name: 'login',
+		component: () => import('@/views/login/login.vue'),
+		meta: {
+			title: 'message.staticRoutes.login',
+			isHide: false,
+		},
 	},
 ];

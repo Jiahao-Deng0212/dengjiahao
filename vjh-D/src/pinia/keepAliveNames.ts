@@ -8,8 +8,17 @@
  */
 
 import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
 export const useKeepAliveNames = defineStore('keepAliveNames', () => {
 	const keepAliveNames = ref<Array<string>>([]);
 	const cacheViews = ref<Array<string>>([]);
+
+	const setCacheKeepAliveNames = (data: Array<string>) => {
+		keepAliveNames.value = data;
+	};
+
+	
+
+	return {keepAliveNames,cacheViews,setCacheKeepAliveNames}
 });

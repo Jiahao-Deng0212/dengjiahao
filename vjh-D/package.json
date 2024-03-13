@@ -11,12 +11,14 @@
 	"dependencies": {
 		"element-plus": "^2.6.1",
 		"normalize.css": "^8.0.1",
+		"nprogress": "^0.2.0",
 		"pinia": "^2.1.7",
 		"vue": "^3.4.19",
 		"vue-router": "^4.3.0"
 	},
 	"devDependencies": {
 		"@types/node": "^20.11.26",
+		"@types/nprogress": "^0.2.0",
 		"@typescript-eslint/eslint-plugin": "^7.2.0",
 		"@typescript-eslint/parser": "^7.2.0",
 		"@vitejs/plugin-vue": "^5.0.4",

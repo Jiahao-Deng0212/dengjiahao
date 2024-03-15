@@ -1,56 +1,48 @@
 <template>
 	<div class="h100" v-show="!isTagsViewCurrenFull">
-		<el-aside class="layout-aside" :class="setCollapseClass">
-			<!-- <Logo /> -->
+		<el-aside class="layout-aside" :class="setCollapseStyle">
+			<!-- <Logo v-if="setShowLogo" /> -->
 			<el-scrollbar class="flex-auto" ref="layoutAsideScrollbarRef">
-				<Navmenu :menuList="state.menuList" />
+				<Vertical :menuList="state.menuList" />
 			</el-scrollbar>
 		</el-aside>
 	</div>
 </template>
-<script setup lang="ts">
-import { useMenuList } from '@/pinia/menuList';
-import { useTagsViewRoutes } from '@/pinia/tagsViewRoutes';
-import { useThemeConfig } from '@/pinia/themeConfig';
+
+<script setup lang="ts" name="layoutAside">
+import { defineAsyncComponent, reactive, computed, watch, onBeforeMount, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { computed, defineAsyncComponent, onBeforeMount, reactive, ref, watch } from 'vue';
-import { RouteRecordRaw } from 'vue-router';
 import mittBus from '@/utils/mitt';
+import { useMenuList } from '@/pinia/menuList';
+import { useThemeConfig } from '@/pinia/themeConfig';
+import { useTagsViewRoutes } from '@/pinia/tagsViewRoutes';
+import { RouteRecordRaw } from 'vue-router';
 
-type AsideState = {
-	menuList: RouteRecordRaw[];
-	clientWidth: number;
-};
-
+// 引入组件
 const Logo = defineAsyncComponent(() => import('@/layout/logo/index.vue'));
-const Navmenu = defineAsyncComponent(() => import('@/layout/navMenu/index.vue'));
+const Vertical = defineAsyncComponent(() => import('@/layout/navMenu/vertical.vue'));
 
-/**
- * * 左侧菜单栏
- * & logo 是否显示
- * & 根据判断显示在移动端还是pc端，或者是屏幕尺寸来决定显示menu
- */
+// 定义变量内容
 const layoutAsideScrollbarRef = ref();
-const themeConfigStore = useThemeConfig();
-const tagsViewRoutesStore = useTagsViewRoutes();
-const menuListStore = useMenuList();
-const { menuList } = storeToRefs(menuListStore);
-const { themeConfig } = storeToRefs(themeConfigStore);
-const { isTagsViewCurrenFull } = storeToRefs(tagsViewRoutesStore);
+const menuListStores = useMenuList();
+const storesThemeConfig = useThemeConfig();
+const storesTagsViewRoutes = useTagsViewRoutes();
+const { menuList } = storeToRefs(menuListStores);
+const { themeConfig } = storeToRefs(storesThemeConfig);
+const { isTagsViewCurrenFull } = storeToRefs(storesTagsViewRoutes);
 const state = reactive<AsideState>({
 	menuList: [],
 	clientWidth: 0,
 });
 
-// TODO 此处的响应式可以使用 getComputedStyle(document.documentElement).getPropertyValue(cssVariableName) 修改css变量值，来动态改变sidebar 宽度
-const setCollapseClass = computed(() => {
+// 设置菜单展开/收起时的宽度
+const setCollapseStyle = computed(() => {
 	const { layout, isCollapse, menuBar } = themeConfig.value;
 	const asideBrTheme = ['#FFFFFF', '#FFF', '#fff', '#ffffff'];
 	const asideBrColor = asideBrTheme.includes(menuBar!) ? 'layout-el-aside-br-color' : '';
-	if (state.clientWidth <= 996) {
-		// 移动端
+	// 判断是否是手机端
+	if (state.clientWidth <= 1000) {
 		if (isCollapse) {
-			// 开启水平折叠
 			document.body.setAttribute('class', 'el-popup-parent--hidden');
 			const asideEle = document.querySelector('.layout-container') as HTMLElement;
 			const modeDivs = document.createElement('div');
@@ -64,7 +56,6 @@ const setCollapseClass = computed(() => {
 			return [asideBrColor, 'layout-aside-mobile', 'layout-aside-mobile-close'];
 		}
 	} else {
-		// pc端
 		if (isCollapse) return [asideBrColor, 'layout-aside-pc-64'];
 		else return [asideBrColor, 'layout-aside-pc-220'];
 	}
@@ -78,7 +69,7 @@ const closeLayoutAsideMobileMode = () => {
 		el?.parentNode?.removeChild(el);
 	}, 300);
 	const clientWidth = document.body.clientWidth;
-	if (clientWidth < 996) themeConfig.value.isCollapse = false;
+	if (clientWidth < 1000) themeConfig.value.isCollapse = false;
 	document.body.setAttribute('class', '');
 };
 
@@ -87,40 +78,49 @@ const setFilterRoutes = () => {
 	state.menuList = filterRoutesFun(menuList.value);
 };
 // 路由过滤递归函数
-const filterRoutesFun = (arr: RouteRecordRaw[]) => {
+const filterRoutesFun = <T extends RouteRecordRaw>(arr: T[]): T[] => {
 	return arr
-		.filter((item: RouteRecordRaw) => !item.meta?.isHide)
-		.map((item: RouteRecordRaw) => {
+		.filter((item: T) => !item.meta?.isHide)
+		.map((item: T) => {
 			item = Object.assign({}, item);
 			if (item.children) item.children = filterRoutesFun(item.children);
 			return item;
 		});
 };
+// 设置菜单导航是否固定（移动端）
+const initMenuFixed = (clientWidth: number) => {
+	state.clientWidth = clientWidth;
+};
 
-// 页面挂在之前
+// 页面加载前
 onBeforeMount(() => {
-	// 获取页面尺寸
-	state.clientWidth = document.body.clientWidth;
-	// 获取路由列表
+	initMenuFixed(document.body.clientWidth);
 	setFilterRoutes();
-
+	// 此界面不需要取消监听(mittBus.off('setSendColumnsChildren))
+	// 因为切换布局时有的监听需要使用，取消了监听，某些操作将不生效
+	mittBus.on('setSendColumnsChildren', (res: MittMenu) => {
+		state.menuList = res.children;
+	});
+	// 开启经典布局分割菜单时，重新处理菜单数据
+	mittBus.on('getBreadcrumbIndexSetFilterRoutes', () => {
+		setFilterRoutes();
+	});
 	// 监听窗口大小改变时(适配移动端)
 	mittBus.on('layoutMobileResize', (res: LayoutMobileResize) => {
-		state.clientWidth = res.clientWidth;
+		initMenuFixed(res.clientWidth);
 		closeLayoutAsideMobileMode();
 	});
 });
-
 // 监听 themeConfig 配置文件的变化，更新菜单 el-scrollbar 的高度
 watch(
 	() => [themeConfig.value.isShowLogoChange, themeConfig.value.isShowLogo, themeConfig.value.layout, themeConfig.value.isClassicSplitMenu],
-	([isShowLogoChange, isShowLogo]) => {
+	([isShowLogoChange, isShowLogo, layout, isClassicSplitMenu]) => {
 		if (isShowLogoChange !== isShowLogo) {
 			if (layoutAsideScrollbarRef.value) layoutAsideScrollbarRef.value.update();
 		}
+		if (layout === 'classic' && isClassicSplitMenu) return false;
 	}
 );
-
 // 监听用户权限切换，用于演示 `权限管理 -> 前端控制 -> 页面权限` 权限切换不生效
 watch(
 	() => menuList.value,
@@ -129,5 +129,3 @@ watch(
 	}
 );
 </script>
-
-<style scoped lang="scss"></style>

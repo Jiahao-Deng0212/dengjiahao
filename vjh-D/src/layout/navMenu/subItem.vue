@@ -2,21 +2,21 @@
 	<template v-for="val in chils">
 		<el-sub-menu :index="val.path" :key="val.path" v-if="val.children && val.children.length > 0">
 			<template #title>
-				<svg style="width: 20px; margin-right: 8px" class="iconpark-icon"><use :xlink:href="val.meta.icon"></use></svg>
-				<span>{{ $t(val.meta.title) }}</span>
+				<SvgIcon :name="val.meta?.icon" />
+				<span>{{ $t(val.meta?.title!) }}</span>
 			</template>
-			<subItem :chil="val.children" />
+			<sub-item :chil="val.children" />
 		</el-sub-menu>
 		<template v-else>
 			<el-menu-item :index="val.path" :key="val.path">
-				<template v-if="!val.meta.isLink || (val.meta.isLink && val.meta.isIframe)">
-					<svg style="width: 20px; margin-right: 8px" class="iconpark-icon"><use :xlink:href="val.meta.icon"></use></svg>
-					<span>{{ $t(val.meta.title) }}</span>
+				<template v-if="!val.meta?.isLink || (val.meta.isLink && val.meta.isIframe)">
+					<SvgIcon :name="val.meta?.icon" />
+					<span>{{ $t(val.meta?.title!) }}</span>
 				</template>
 				<template v-else>
 					<a class="w100" @click.prevent="onALinkClick(val)">
-						<svg style="width: 20px; margin-right: 8px" class="iconpark-icon"><use :xlink:href="val.meta.icon"></use></svg>
-						{{ $t(val.meta.title) }}
+						<SvgIcon :name="val.meta.icon" />
+						{{ $t(val.meta?.title!) }}
 					</a>
 				</template>
 			</el-menu-item>
@@ -24,26 +24,23 @@
 	</template>
 </template>
 
-<script setup lang="ts" name="navMenuSubItem">
+<script setup lang="ts">
 import other from '@/utils/other';
 import { computed } from 'vue';
 import { RouteRecordRaw } from 'vue-router';
 
-// 定义父组件传过来的值
-const props = defineProps({
-	// 菜单列表
-	chil: {
-		type: Array<RouteRecordRaw>,
-		default: () => [],
-	},
+const props = withDefaults(defineProps<{ chil: RouteRecordRaw[] }>(), {
+	chil: () => [],
 });
 
 // 获取父级菜单数据
 const chils = computed(() => {
-	return props.chil;
+	return <RouteItem[]>props.chil;
 });
 // 打开外部链接
 const onALinkClick = (val: RouteItem) => {
 	other.handleOpenLink(val);
 };
 </script>
+
+<style scoped lang="scss"></style>

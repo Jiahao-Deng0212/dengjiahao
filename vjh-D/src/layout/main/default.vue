@@ -1,61 +1,75 @@
 <template>
 	<el-container class="layout-container">
-		<AsideC />
+		<LayoutAside />
 		<el-container class="layout-container-view h100">
-			<el-scrollbar ref="scrollbarRef" class="layout-backtop">
-				<HeaderC />
-				<MainC ref="layoutMainRef" />
+			<el-scrollbar ref="layoutScrollbarRef" class="layout-backtop">
+				<LayoutHeader />
+				<LayoutMain ref="layoutMainRef" />
 			</el-scrollbar>
 		</el-container>
 	</el-container>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="layoutDefaults">
+import { defineAsyncComponent, watch, onMounted, nextTick, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '@/pinia/themeConfig';
 import { NextLoading } from '@/utils/loading';
-import { ElScrollbar } from 'element-plus';
-import { storeToRefs } from 'pinia';
-import { defineAsyncComponent, nextTick, onMounted, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
 
-const AsideC = defineAsyncComponent(() => import('@/layout/component/aside.vue'));
-const HeaderC = defineAsyncComponent(() => import('@/layout/component/header.vue'));
-const MainC = defineAsyncComponent(() => import('@/layout/component/main.vue'));
+// 引入组件
+const LayoutAside = defineAsyncComponent(() => import('@/layout/component/aside.vue'));
+const LayoutHeader = defineAsyncComponent(() => import('@/layout/component/header.vue'));
+const LayoutMain = defineAsyncComponent(() => import('@/layout/component/main.vue'));
 
-/**
- * * layout：default 布局
- * & 重置滚动条高度
- */
-const scrollbarRef = ref<any>();
-const router = useRoute();
-const themeConfigStore = useThemeConfig();
-const { themeConfig } = storeToRefs(themeConfigStore);
+// 定义变量内容
+const layoutScrollbarRef = ref<RefType>('');
+const layoutMainRef = ref<InstanceType<typeof LayoutMain>>();
+const route = useRoute();
+const storesThemeConfig = useThemeConfig();
+const { themeConfig } = storeToRefs(storesThemeConfig);
 
-// 更新滚动条
+// 重置滚动条高度
 const updateScrollbar = () => {
-	scrollbarRef.value.update();
-	scrollbarRef.value.setScrollTop(0);
+	// 更新父级 scrollbar
+	layoutScrollbarRef.value.update();
+	// 更新子级 scrollbar
+	// layoutMainRef.value!.layoutMainScrollbarRef.update();
 };
-
-onMounted(() => {
-	// 更新滚动条
-	// ! 因为子组件是异步引入，所有需要在nextTick来触发更新，否则可能拿不到引入组件的所有信息
-	nextTick().then(() => {
-		updateScrollbar();
-		NextLoading.done(300);
+// 重置滚动条高度，由于组件是异步引入的
+const initScrollBarHeight = () => {
+	nextTick(() => {
+		setTimeout(() => {
+			updateScrollbar();
+			layoutScrollbarRef.value.wrapRef.scrollTop = 0;
+			// layoutMainRef.value!.layoutMainScrollbarRef.wrapRef.scrollTop = 0;
+		}, 500);
 	});
+};
+// 页面加载时
+onMounted(() => {
+	initScrollBarHeight();
+	NextLoading.done(600);
 });
-
+// 监听路由的变化，切换界面时，滚动条置顶
 watch(
-	// https://cn.vuejs.org/guide/essentials/watchers.html#basic-example
-	[() => router.path, () => themeConfig.value.isTagsview, () => themeConfig.value.isFixedHeader],
-	// 执行副作用
+	() => route.path,
+	() => {
+		nextTick(() => {
+			initScrollBarHeight();
+		});
+	}
+);
+// 监听 themeConfig 配置文件的变化，更新菜单 el-scrollbar 的高度
+watch(
+	() => [themeConfig.value.isTagsview, themeConfig.value.isFixedHeader],
 	() => {
 		nextTick(() => {
 			updateScrollbar();
 		});
+	},
+	{
+		deep: true,
 	}
 );
 </script>
-
-<style scoped lang="scss"></style>

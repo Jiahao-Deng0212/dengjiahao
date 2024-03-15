@@ -90,11 +90,11 @@ function formatTwoStageRoutes(arr: RouteRecordRaw[] | boolean) {
 			if (arr[i].path === '/') {
 				newArr.push({ ...arr[i], ...{ children: [] } });
 			} else {
-				// TODO 作用？
-				// if (arr[i].path.indexOf('/:') > -1) {
-				// 	arr[i].meta!.isDynamic = true;
-				// 	arr[i].meta!.isDynamicPath = arr[i].path;
-				// }
+				
+				if (arr[i].path.indexOf('/:') > -1) {
+					arr[i].meta!.isDynamic = true;
+					arr[i].meta!.isDynamicPath = arr[i].path;
+				}
 
 				newArr[0].children?.push(arr[i]);
 

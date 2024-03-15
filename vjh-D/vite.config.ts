@@ -60,8 +60,6 @@ export default defineConfig((config: ConfigEnv) => {
 			}),
 		],
 
-		base: config.command === 'serve' ? './' : env.VITE_PUBLIC_PATH,
-
 		resolve: {
 			alias: {
 				'@': resolve(__dirname, 'src'),

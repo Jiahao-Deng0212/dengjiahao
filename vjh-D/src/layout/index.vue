@@ -12,9 +12,7 @@ import mittBus from '@/utils/mitt';
 // 引入动态组件
 const layout: any = {
 	defaults: defineAsyncComponent(() => import('./main/default.vue')),
-	// classic: defineAsyncComponent(() => import('./main/classic.vue')),
-	// transverse: defineAsyncComponent(() => import('./main/transverse.vue')),
-	// columns: defineAsyncComponent(() => import('./main/columns.vue')),
+	// 扩展布局
 };
 
 const themeConfigStore = useThemeConfig();
@@ -28,7 +26,6 @@ const layoutValue = computed(() => layout[themeConfig.value.layout!]);
  * * 适配移动端
  *
  */
-
 const onLayoutResize = () => {
 	if (!Local.setTarget('localStorage').get('oldLayout')) Local.set('oldLayout', themeConfig.value.layout);
 	const clientWidth = document.body.clientWidth;

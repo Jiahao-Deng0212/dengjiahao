@@ -1,25 +1,20 @@
 <template>
-	<div>
-		<div class="layout-logo" v-if="setShowLogo" @click="onThemeConfigChange">
-			<img :src="logoMini" class="layout-logo-medium-img" />
-			<span>logo</span>
-		</div>
-		<div class="layout-logo-size" v-else @click="onThemeConfigChange">
-			<img :src="logoMini" class="layout-logo-size-img" />
-		</div>
+	<div class="layout-logo" v-if="setShowLogo" @click="onThemeConfigChange">
+		<span>{{ themeConfig.globalTitle }}</span>
 	</div>
+	<div class="layout-logo-size" v-else @click="onThemeConfigChange"></div>
 </template>
 
 <script setup lang="ts">
-import logoMini from '@/assets/images/logo.png';
 import { useThemeConfig } from '@/pinia/themeConfig';
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
-const themeConfigstore = useThemeConfig();
-const { themeConfig } = storeToRefs(themeConfigstore);
 
+const themeConfigStore = useThemeConfig();
+const { themeConfig } = storeToRefs(themeConfigStore);
+
+// 设置 logo 的显示。
 const setShowLogo = computed(() => {
-	const { isCollapse } = themeConfig.value;
+	let { isCollapse } = themeConfig.value;
 	return !isCollapse || document.body.clientWidth < 1000;
 });
 

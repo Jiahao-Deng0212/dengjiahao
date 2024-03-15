@@ -27,7 +27,7 @@ export const useUserInfo = defineStore('userInfo', () => {
 
 	const login = async (params: LoginPrams) => {};
 
-	const getUserInfo = async (token: string) => {
+	const getUserInfo = async () => {
 		// mock
 		return new Promise((rs, rj) => {
 			setTimeout(() => {
@@ -62,9 +62,10 @@ export const useUserInfo = defineStore('userInfo', () => {
 					roles: defaultRoles,
 					authBtnList: defaultAuthBtnList,
 				};
-				userInfo = Object.assign(userInfo, useUserInfo);
+				Object.assign(userInfo, userInfos);
 				rs(useUserInfo);
 			}, 1000);
 		});
 	};
+	return { token, userInfo, login, getUserInfo };
 });

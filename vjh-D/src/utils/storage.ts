@@ -10,7 +10,7 @@ interface LocalType {
 	setTarget: (target: string) => LocalType;
 	setKey: (key: string) => string;
 	set: (key: string, value: any) => void;
-	get: (key: string) => string;
+	get: (key: string) => any;
 	remove: (key: string) => void;
 	clear: () => void;
 }

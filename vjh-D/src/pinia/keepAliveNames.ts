@@ -9,16 +9,15 @@
 
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { RouteRecordName } from 'vue-router';
 
 export const useKeepAliveNames = defineStore('keepAliveNames', () => {
-	const keepAliveNames = ref<Array<string>>([]);
+	const keepAliveNames = ref<RouteRecordName[]>([]);
 	const cacheViews = ref<Array<string>>([]);
 
-	const setCacheKeepAliveNames = (data: Array<string>) => {
-		keepAliveNames.value = data;
+	const setCacheKeepAliveNames = (data: RouteRecordName) => {
+		keepAliveNames.value.push(data);
 	};
 
-	
-
-	return {keepAliveNames,cacheViews,setCacheKeepAliveNames}
+	return { keepAliveNames, cacheViews, setCacheKeepAliveNames };
 });

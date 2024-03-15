@@ -8,12 +8,13 @@
 
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { RouteRecordRaw } from 'vue-router';
 
 export const useTagsViewRoutes = defineStore('tagsViewRoutes', () => {
-	const tagsViewRoutesList = ref<any[]>();
+	const tagsViewRoutesList = ref<RouteRecordRaw[]>();
 	const isTagsViewCurrenFull = ref();
 
-	const setTagsViewRoutes = (value: any[]) => {
+	const setTagsViewRoutes = (value: RouteRecordRaw[]) => {
 		tagsViewRoutesList.value = value;
 	};
 

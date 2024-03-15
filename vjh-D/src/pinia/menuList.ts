@@ -7,16 +7,17 @@
 
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { RouteRecordRaw } from 'vue-router';
 
-export const useRouteList = defineStore('routeList', () => {
+export const useMenuList = defineStore('menuList', () => {
 	// TODO any
-	const routeList = ref<any[]>();
+	const menuList = ref<RouteRecordRaw[]>([]);
 	const isColumnsMenuHover = ref(false);
 	const isColumnsNavHover = ref(false);
 
-	const setRouteList = (value: any) => {
+	const setMenuList = (value: RouteRecordRaw[]) => {
 		// * 如何添加未定
-		routeList.value?.push(value);
+		menuList.value = value;
 	};
 
 	const setColumnsMenuHover = (status: boolean) => {
@@ -27,5 +28,5 @@ export const useRouteList = defineStore('routeList', () => {
 		isColumnsNavHover.value = status;
 	};
 
-	return { routeList, isColumnsMenuHover, isColumnsNavHover, setRouteList, setColumnsMenuHover, setColumnsNavHover };
+	return { menuList, isColumnsMenuHover, isColumnsNavHover, setMenuList, setColumnsMenuHover, setColumnsNavHover };
 });

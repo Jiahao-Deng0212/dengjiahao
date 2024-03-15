@@ -1,5 +1,7 @@
 <template>
-	<div>header</div>
+	<div>
+		<el-header>header</el-header>
+	</div>
 </template>
 
 <script setup lang="ts"></script>

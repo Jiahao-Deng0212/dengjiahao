@@ -19,7 +19,8 @@ export default <RouteRecordRaw[]>[
 					isKeepAlive: true,
 					isAffix: true,
 					roles: ['admin', 'common'],
-					icon: 'iconfont icon-shouye',
+					// icon: 'iconfont icon-shouye',
+					icon: '#magic',
 				},
 			},
 			// 菜单管理
@@ -28,11 +29,22 @@ export default <RouteRecordRaw[]>[
 				name: 'menu',
 				component: () => import('@/layout/routerView/parent.vue'),
 				redirect: '/menu/menu-1',
+				meta: {
+					title: 'message.router.menu',
+					isKeepAlive: true,
+					roles: ['admin', 'common'],
+					icon: '#again',
+				},
 				children: [
 					{
 						path: '/menu/menu-1',
 						name: 'menu1',
 						redirect: '/menu/menu-1/menu-1-1',
+						meta: {
+							title: 'message.router.menu1',
+							isKeepAlive: true,
+							roles: ['admin', 'common'],
+						},
 						children: [
 							{
 								path: '/menu/menu-1/menu-1-1',
@@ -50,6 +62,11 @@ export default <RouteRecordRaw[]>[
 								path: '/menu/menu-1/menu-1-2',
 								name: 'menu12',
 								redirect: '/menu/menu-1/menu-1-2/menu-1-2-1',
+								meta: {
+									title: 'message.router.menu12',
+									isKeepAlive: true,
+									roles: ['admin', 'common'],
+								},
 								children: [
 									{
 										path: '/menu/menu-1/menu-1-2/menu-1-2-1',

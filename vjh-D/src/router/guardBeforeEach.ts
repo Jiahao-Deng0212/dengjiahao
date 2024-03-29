@@ -10,7 +10,6 @@ import { initControlRoutes } from './initRouter';
 import { useMenuList } from '@/pinia/menuList';
 Nprogress.configure({ showSpinner: false });
 
-// ! 在use(pinia)之前需要传入pinia
 const themeConfigStore = useThemeConfig(pinia);
 const { themeConfig } = storeToRefs(themeConfigStore);
 // 获取是否采用前端路由

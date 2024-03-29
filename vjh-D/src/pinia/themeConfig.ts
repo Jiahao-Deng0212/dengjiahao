@@ -102,9 +102,6 @@ export const useThemeConfig = defineStore('themeConfig', () => {
 		/**
 		 * 其它设置
 		 */
-		// Tagsview 风格：可选值"<tags-style-one|tags-style-four|tags-style-five>"，默认 tags-style-five
-		// 定义的值与 `/src/layout/navBars/tagsView/tagsView.vue` 中的 class 同名
-		tagsStyle: 'tags-style-five',
 		// 主页面切换动画：可选值"<slide-right|slide-left|opacitys>"，默认 slide-right
 		animation: 'slide-right',
 		// 分栏高亮风格：可选值"<columns-round|columns-card>"，默认 columns-round

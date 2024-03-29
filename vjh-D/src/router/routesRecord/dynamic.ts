@@ -11,7 +11,7 @@ export default <RouteRecordRaw[]>[
 		},
 		children: [
 			{
-				path: '/home',
+				path: '/home/:id',
 				name: 'home',
 				component: () => import('@/views/login/login.vue'),
 				meta: {
@@ -20,7 +20,7 @@ export default <RouteRecordRaw[]>[
 					isAffix: true,
 					roles: ['admin', 'common'],
 					// icon: 'iconfont icon-shouye',
-					icon: '#magic',
+					icon: 'iconfont icon-shouye',
 				},
 			},
 			// 菜单管理

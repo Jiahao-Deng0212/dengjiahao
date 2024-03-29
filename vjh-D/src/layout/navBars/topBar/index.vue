@@ -7,6 +7,8 @@
 </template>
 
 <script setup lang="ts" name="layoutBreadcrumbIndex">
+import { defineAsyncComponent, watch, onMounted, nextTick, ref } from 'vue';
+
 const Logo = defineAsyncComponent(() => import('@/layout/logo/index.vue'));
 const Breadcrumb = defineAsyncComponent(() => import('./breadcrumb.vue'));
 const User = defineAsyncComponent(() => import('./user.vue'));

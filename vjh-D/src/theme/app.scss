@@ -7,23 +7,6 @@
 	outline: none !important;
 }
 
-:root {
-	--next-color-white: #ffffff;
-	--next-bg-main-color: #f8f8f8;
-	--next-bg-color: #f5f5ff;
-	--next-border-color-light: #f1f2f3;
-	--next-color-primary-lighter: #ecf5ff;
-	--next-color-success-lighter: #f0f9eb;
-	--next-color-warning-lighter: #fdf6ec;
-	--next-color-danger-lighter: #fef0f0;
-	--next-color-dark-hover: #0000001a;
-	--next-color-menu-hover: rgba(0, 0, 0, 0.2);
-	--next-color-user-hover: rgba(0, 0, 0, 0.04);
-	--next-color-seting-main: #e9eef3;
-	--next-color-seting-aside: #d3dce6;
-	--next-color-seting-header: #b3c0d1;
-}
-
 html,
 body,
 #app {
@@ -82,7 +65,7 @@ body,
 		padding: 0 !important;
 		overflow: hidden;
 		width: 100%;
-		background-color: var(--next-bg-main-color);
+		background-color: #fff;
 		display: flex;
 		flex-direction: column;
 		// 内层 el-scrollbar样式，用于界面高度自适应（main.vue）
@@ -116,18 +99,12 @@ body,
 			overflow: hidden;
 		}
 	}
-	// 用于界面高度自适应，主视图区 main 的内边距，用于 iframe
+	// 用于界面高度自适应，主视图区 main 的内边距，
 	.layout-padding-unset {
 		padding: 0 !important;
 		&-view {
 			border-radius: 0 !important;
 			border: none !important;
-		}
-	}
-	// 用于设置 iframe loading 时的高度（loading 垂直居中显示）
-	.layout-iframe {
-		.el-loading-parent--relative {
-			height: 100%;
 		}
 	}
 	.el-scrollbar {
@@ -293,41 +270,4 @@ body,
 }
 .color-info {
 	color: var(--el-color-info);
-}
-
-/* 字体大小全局样式
-------------------------------- */
-@for $i from 10 through 32 {
-	.font#{$i} {
-		font-size: #{$i}px !important;
-	}
-}
-
-/* 外边距、内边距全局样式
-------------------------------- */
-@for $i from 1 through 35 {
-	.mt#{$i} {
-		margin-top: #{$i}px !important;
-	}
-	.mr#{$i} {
-		margin-right: #{$i}px !important;
-	}
-	.mb#{$i} {
-		margin-bottom: #{$i}px !important;
-	}
-	.ml#{$i} {
-		margin-left: #{$i}px !important;
-	}
-	.pt#{$i} {
-		padding-top: #{$i}px !important;
-	}
-	.pr#{$i} {
-		padding-right: #{$i}px !important;
-	}
-	.pb#{$i} {
-		padding-bottom: #{$i}px !important;
-	}
-	.pl#{$i} {
-		padding-left: #{$i}px !important;
-	}
 }

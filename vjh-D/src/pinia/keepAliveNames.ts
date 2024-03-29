@@ -12,10 +12,10 @@ import { ref } from 'vue';
 import { RouteRecordName } from 'vue-router';
 
 export const useKeepAliveNames = defineStore('keepAliveNames', () => {
-	const keepAliveNames = ref<RouteRecordName[]>([]);
+	const keepAliveNames = ref<string[]>([]);
 	const cacheViews = ref<Array<string>>([]);
 
-	const setCacheKeepAliveNames = (data: RouteRecordName) => {
+	const setCacheKeepAliveNames = (data: string) => {
 		keepAliveNames.value.push(data);
 	};
 

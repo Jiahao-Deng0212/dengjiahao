@@ -6,8 +6,9 @@
 </template>
 
 <script setup lang="ts">
+import { defineAsyncComponent, watch, onMounted, nextTick, ref } from 'vue';
+
 const BreadcrumbIndex = defineAsyncComponent(() => import('@/layout/navBars/topBar/index.vue'));
-const TagsView = defineAsyncComponent(() => import('@/layout/navBars/tagsView/tagsView.vue'));
 </script>
 
 <style scoped lang="scss">

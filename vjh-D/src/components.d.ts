@@ -10,6 +10,7 @@ declare module 'vue' {
     copy: typeof import('./components/svgIcon/index copy.vue')['default']
     Demo: typeof import('./components/Demo.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
+    ElBacktop: typeof import('element-plus/es')['ElBacktop']
     ElBadge: typeof import('element-plus/es')['ElBadge']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']

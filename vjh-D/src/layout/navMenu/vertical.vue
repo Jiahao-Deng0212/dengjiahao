@@ -35,6 +35,7 @@ import { useThemeConfig } from '@/pinia/themeConfig';
 import other from '@/utils/other';
 import { storeToRefs } from 'pinia';
 import { RouteRecord, onBeforeRouteUpdate, useRoute } from 'vue-router';
+import { defineAsyncComponent, watch, onMounted, reactive, computed } from 'vue';
 
 interface Props {
 	menuList: RouteRecord[];
